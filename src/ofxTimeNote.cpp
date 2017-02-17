@@ -10,13 +10,16 @@
 
 int ofxTimeNote::update(){
     
-    mCurrentTime += ofGetLastFrameTime();
+    
+    if(mIsStart)mCurrentTime += ofGetLastFrameTime();
     
     int value = -1;
     
-    if(mCurrentTime > getCurrentTime()){
-        value = getCurrentKey();
-        next();
+    if(mIsStart){
+        if(mCurrentTime > getCurrentTime()){
+            value = getCurrentKey();
+            next();
+        }
     }
     
     return value;
@@ -75,3 +78,12 @@ void ofxTimeNote::seek(float time){
         }
     }
 }
+
+void ofxTimeNote::setToFirstNote(){
+    mCurrentNote = 0;
+    mCurrentTime = mNotes.at(0).time;
+};
+
+void ofxTimeNote::setStart(bool start){
+    mIsStart = start;
+};

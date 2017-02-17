@@ -19,7 +19,9 @@ public:
         float time;
     };
     
-    ofxTimeNote():mCurrentNote(0),mCurrentTime(0){
+    ofxTimeNote():mCurrentNote(0),
+                  mCurrentTime(0),
+                  mIsStart(false){
         
     }
     
@@ -37,6 +39,9 @@ public:
     void setTrackName(string name){mTrackName = name;};
     string getTrackName(){return mTrackName;};
     
+    void setToFirstNote();
+    void setStart(bool start);
+    
 private:
     
     vector<Note>mNotes;
@@ -44,6 +49,8 @@ private:
     float mCurrentTime;
     
     string mTrackName;
+    
+    bool mIsStart;
     
 };
 
