@@ -44,11 +44,13 @@ void ofxTimeNote::push(int key, float time){
 };
 
 float ofxTimeNote::getCurrentTime(){
-    return mNotes[mCurrentNote].time;
+    assert(mNotes.empty() == false);
+    return mNotes.at(mCurrentNote).time;
 }
 
 int ofxTimeNote::getCurrentKey(){
-    return mNotes[mCurrentNote].key;
+    assert(mNotes.empty() == false);
+    return mNotes.at(mCurrentNote).key;
 }
 
 void ofxTimeNote::next(){

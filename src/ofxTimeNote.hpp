@@ -14,14 +14,14 @@
 class ofxTimeNote{
 public:
     
-    ofxTimeNote():mCurrentNote(0),mCurrentTime(0){
-        
-    }
-    
     struct Note{
         int key;
         float time;
     };
+    
+    ofxTimeNote():mCurrentNote(0),mCurrentTime(0){
+        
+    }
     
     int update();
     int updateByExternalTime(float time);
