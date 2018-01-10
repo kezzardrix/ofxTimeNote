@@ -10,13 +10,13 @@
 
 int ofxTimeNote::update(){
     
-    
-    if(mIsStart)mCurrentTime += ofGetLastFrameTime();
+    if(mIsStart)mCurrentTime += ofGetLastFrameTime() * mPitch;
     
     int value = -1;
+    if(mHasFinished == true)return -1;
     
     if(mIsStart){
-        if(mCurrentTime > getCurrentTime()){
+        if(mCurrentTime + mTimeOffset > getCurrentEventTime()){
             value = getCurrentKey();
             next();
         }
@@ -30,8 +30,9 @@ int ofxTimeNote::updateByExternalTime(float time){
     mCurrentTime = time;
     
     int value = -1;
+    if(mHasFinished == true)return -1;
     
-    if(mCurrentTime > getCurrentTime()){
+    if(mCurrentTime > getCurrentEventTime()){
         value = getCurrentKey();
         next();
     }
@@ -47,6 +48,10 @@ void ofxTimeNote::push(int key, float time){
 };
 
 float ofxTimeNote::getCurrentTime(){
+    return mCurrentTime;
+}
+
+float ofxTimeNote::getCurrentEventTime(){
     assert(mNotes.empty() == false);
     return mNotes.at(mCurrentNote).time;
 }
@@ -60,7 +65,11 @@ void ofxTimeNote::next(){
     
     if(mCurrentNote < mNotes.size()){
         mCurrentNote++;
-        mCurrentNote = ofClamp(mCurrentNote, 0, mNotes.size() - 1);
+        if(mCurrentNote == mNotes.size()){
+            mHasFinished = true;
+            mCurrentNote = mNotes.size() - 1;
+        }
+     //   mCurrentNote = ofClamp(mCurrentNote, 0, mNotes.size() - 1);
     }
     
 }
@@ -86,4 +95,16 @@ void ofxTimeNote::setToFirstNote(){
 
 void ofxTimeNote::setStart(bool start){
     mIsStart = start;
+    if(mIsStart){
+        mHasFinished = false;
+        mFinishedCounter = 0;
+    }
 };
+
+void ofxTimeNote::dump(){
+    
+    for(auto &v:mNotes){
+        cout << "key: " << v.key << endl;
+        cout << "note: "<< v.time << endl;
+    }
+}

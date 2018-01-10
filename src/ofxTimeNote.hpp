@@ -21,9 +21,14 @@ public:
     
     ofxTimeNote():mCurrentNote(0),
                   mCurrentTime(0),
-                  mIsStart(false){
+                  mIsStart(false),
+                  mFinishedCounter(0),
+                  mHasFinished(false),
+				  mPitch(1.0){
         
     }
+    
+    void setup(string path);
     
     int update();
     int updateByExternalTime(float time);
@@ -31,6 +36,7 @@ public:
     void push(int key, float time);
     
     float getCurrentTime();
+    float getCurrentEventTime();
     int getCurrentKey();
     void next();
     void reset();
@@ -42,6 +48,14 @@ public:
     void setToFirstNote();
     void setStart(bool start);
     
+    bool isStart(){
+        return mIsStart;
+    }
+    
+    void dump();
+	void setTimeOffset(float offset) { mTimeOffset = offset; }
+	void setPitch(float pitch) { mPitch = pitch; }
+    
 private:
     
     vector<Note>mNotes;
@@ -51,6 +65,12 @@ private:
     string mTrackName;
     
     bool mIsStart;
+    bool mHasFinished;
+    int mFinishedCounter;
+
+	float mTimeOffset;
+
+	float mPitch;
     
 };
 
